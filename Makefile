@@ -9,11 +9,11 @@ clean:
 
 dist: node_modules $(TS_FILES) tsconfig.json
 	rm -rf dist
-	$(BIN)/tsc || rm -rf dist
+	$(BIN)/tsc -p tsconfig-build.json || rm -rf dist
 
 node_modules: package-lock.json
 	npm install || (rm -rf node_modules; exit 1)
-	test -d $@ && touch $@ || true
+	test -d $@ && touch $@ ||:
 
 .PHONY: test
 ifdef FILE
@@ -21,7 +21,7 @@ test: dist
 	$(BIN)/c8 --reporter=none $(BIN)/ts-mocha -b $(FILE)
 else
 test: dist
-	$(BIN)/c8 --reporter=none $(BIN)/ts-mocha -b 'src/**/*.test.ts' \
+	$(BIN)/c8 --reporter=none $(BIN)/mocha --require @swc-node/register --full-trace -b 'src/**/*.test.ts' \
 		&& $(BIN)/c8 report --all --clean -n src -x 'src/**/*.test.ts' -x 'src/types.*' --reporter=text
 endif
 

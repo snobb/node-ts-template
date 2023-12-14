@@ -1,7 +1,7 @@
-import { strictEqual } from 'assert';
+import { strictEqual } from 'node:assert';
 
 describe('index', () => {
-  it('noop', () => {
-    strictEqual(true, true);
-  });
+    it('noop', () => {
+        strictEqual(true, true);
+    });
 });
