@@ -1,7 +1,6 @@
 BIN := ./node_modules/.bin
-TS_FILES := $(shell find src/ -name '*.ts')
-TEST_FILES := src/**/*.test.ts
-MOCHA_OPTS := --bail --type-check --full-trace
+TS_FILES := ${shell find src/ -name '*.ts'}
+TEST_FILES := ${shell find src/ -name '*.test.ts'}
 
 all: dist
 
@@ -14,16 +13,15 @@ help:
 run: dist
 	node --enable-source-maps ./dist/index.js
 
-## test:		run unit tests (if FILE env variable specified - run test for that file)
+## test: 		run unit tests (if FILE env variable specified - run test for that file)
 .PHONY: test
 ifdef FILE
 test: dist
-	$(BIN)/c8 --reporter=none $(BIN)/mocha --require @swc-node/register ${MOCHA_OPTS} $(FILE)
+	node --test --experimental-test-coverage --require @swc-node/register ${FILE}
+	node --test-reporter=spec
 else
 test: dist
-	$(BIN)/c8 --reporter=none \
-		$(BIN)/mocha --require @swc-node/register ${MOCHA_OPTS} ${TEST_FILES} && \
-		$(BIN)/c8 report --all --clean -n src -x ${TEST_FILES} -x 'src/types.*' --reporter=text
+	node --test --experimental-test-coverage --require @swc-node/register ${TEST_FILES}
 endif
 
 ## clean: 	clean the project
@@ -31,12 +29,11 @@ endif
 clean:
 	rm -rf coverage dist node_modules package-lock.json
 
-dist: node_modules $(TS_FILES) tsconfig.json
-	rm -rf dist
-	$(BIN)/tsc -p tsconfig-build.json
+dist: node_modules $(TS_FILES) tsconfig.json package.json
+	$(BIN)/tsc -p tsconfig-build.json || rm -rf dist
 
-node_modules: package.json package-lock.json
-	npm install || (rm -rf $@; exit 1)
+node_modules: package-lock.json
+	npm install || (rm -rf node_modules; exit 1)
 	test -d $@ && touch $@ ||:
 
 package-lock.json:
