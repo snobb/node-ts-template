@@ -23,16 +23,16 @@ lint: node_modules
 format: node_modules
 	$(BIN)/biome format --write
 
-## test: 		run unit tests (if FILE env variable specified - run test for that file)
+## test:		run tests
 .PHONY: test
-ifdef FILE
-test: dist
-	node --test --experimental-transform-types --experimental-test-coverage ${FILE}
-	node --test-reporter=spec
-else
-test: dist
-	node --test --experimental-transform-types --experimental-test-coverage ${TEST_FILES}
-endif
+test: node_modules dist
+	node --experimental-vm-modules ./node_modules/.bin/jest --coverage
+
+## test-watch:	watch files and related tests
+## 		set FILE to limit to specific spec
+.PHONY: test-watch
+test-watch: node_modules dist
+	node --experimental-vm-modules ./node_modules/.bin/jest --watchAll ${FILE}
 
 .PHONY: clean-dist
 clean-dist:

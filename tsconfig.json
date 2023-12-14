@@ -11,8 +11,8 @@
         "moduleResolution": "nodenext",
         // For nodejs:
         "lib": ["esnext"],
-        "types": ["node"],
-        // and npm install -D @types/node
+        "types": ["node", "jest"],
+        // and npm install -D @types/node @types/jest
 
         // Other Outputs
         "sourceMap": true,
