@@ -10,17 +10,16 @@ all: dist
 help:
 	@sed -n 's/^##//p' makefile
 
-## test:		run unit tests (if FILE env variable specified - run test for that file)
+## test:		run tests
 .PHONY: test
-ifdef FILE
-test: dist
-	$(BIN)/c8 --reporter=none $(BIN)/mocha --require @swc-node/register ${MOCHA_OPTS} $(FILE)
-else
-test: dist
-	$(BIN)/c8 --reporter=none \
-		$(BIN)/mocha --require @swc-node/register ${MOCHA_OPTS} ${TEST_FILES} && \
-		$(BIN)/c8 report --all --clean -n src -x ${TEST_FILES} -x 'src/types.*' --reporter=text
-endif
+test: node_modules dist
+	./node_modules/.bin/jest --coverage
+
+## test-watch:	watch files and related tests
+## 		set FILE to limit to specific spec
+.PHONY: test-watch
+test-watch: node_modules dist
+	./node_modules/.bin/jest --watchAll ${FILE}
 
 ## clean: 	clean the project
 .PHONY: clean
