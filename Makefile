@@ -8,7 +8,11 @@ all: dist
 ## help:		show this help
 .PHONY: help
 help:
-	@sed -n 's/^##//p' makefile
+	@sed -n 's/^##//p' Makefile
+
+## run:		run the program
+run: dist
+	node --enable-source-maps ./dist/index.js
 
 ## test:		run unit tests (if FILE env variable specified - run test for that file)
 .PHONY: test
