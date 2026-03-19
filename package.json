@@ -1,32 +1,21 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "tslib": "^2"
   },
   "devDependencies": {
-    "@swc-node/register": "^1.6.8",
-    "@types/node": "^20",
-    "@typescript-eslint/eslint-plugin": "^6",
-    "@typescript-eslint/parser": "^6",
-    "eslint": "^8",
-    "eslint-config-prettier": "^9",
-    "eslint-plugin-import": "^2",
-    "prettier": "^3",
-    "typescript": "^5"
-  },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "root": true
+    "typescript": "^5",
+    "@types/node": "^24.0.0",
+    "eslint": "^9",
+    "prettier": "^3.5.0",
+    "typescript-eslint": "^8",
+    "globals": "^15",
+    "eslint-config-prettier": "^10"
   }
 }
