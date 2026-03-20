@@ -13,6 +13,16 @@ help:
 run: dist
 	node --enable-source-maps ./dist/app.js
 
+## lint:		run linter checks
+.PHONY: lint
+lint: node_modules
+	$(BIN)/biome check --write --error-on-warnings
+
+## format:	run formatter checks
+.PHONY: format
+format: node_modules
+	$(BIN)/biome format --write
+
 ## test: 		run unit tests (if FILE env variable specified - run test for that file)
 .PHONY: test
 ifdef FILE
@@ -32,7 +42,6 @@ clean-dist:
 .PHONY: clean
 clean: clean-dist
 	-rm -rf coverage node_modules package-lock.json
-
 
 ## dist:		build the project
 .PHONY: dist
